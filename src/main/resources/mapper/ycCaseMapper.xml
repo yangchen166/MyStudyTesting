@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace  用于完成interface接口
+    select id  : 对应mapper中的方法名
+-->
+<mapper namespace="com.testing.ycclient.mapper.YcCaseMapper">
+    <select id="geCaseById" resultType="com.testing.ycclient.model.YcCase">
+        select * from yc_case where id = #{id}
+    </select>
+
+    <!--动态sql mybatis特色
+    foreach:
+    -->
+
+    <delete id="delCaseById" >
+        delete from yc_case  where id in
+        <foreach collection="list" separator="," item="id" open="(" close=")" >
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getcaseByParam1" resultType="com.testing.ycclient.model.YcCase">
+        select * from yc_case
+        <where>
+            <if test="param1!=null and param1!=''">
+                param1=#{param1}param1!=null and param1!=''
+            </if>
+        </where>
+    </select>
+
+    <update id="updateCaseByXML">
+        update yc_case
+        <set>
+            <if test="param1!=null and param1!=''">
+                param1=#{param1},
+            </if>
+            case_name=#{caseName}
+        </set>
+        where id=#{id}
+    </update>
+
+</mapper>
